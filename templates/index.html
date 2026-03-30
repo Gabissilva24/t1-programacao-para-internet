@@ -1,0 +1,50 @@
+{% extends 'base_publica.html' %}
+
+{% block conteudo %}
+<div class="row align-items-center g-5 py-5">
+    <div class="col-lg-7 text-center text-lg-start">
+        <h1 class="display-4 fw-bold lh-1 mb-3">🎬 CineCatálogo</h1>
+        <p class="col-lg-10 fs-4">
+            Gerencie sua coleção de filmes e séries clássicas em um só lugar. 
+            Organize por gêneros, diretores e plataformas de streaming.
+        </p>
+    </div>
+    <div class="col-md-10 mx-auto col-lg-5">
+        <div class="p-4 p-md-5 border rounded-3 bg-white shadow-sm text-center">
+            <h3>Comece agora</h3>
+            <p class="text-muted">Acesse o sistema para gerenciar seu catálogo.</p>
+            <div class="d-grid gap-2">
+                <a href="{{ url_for('login') }}" class="btn btn-primary btn-lg">Entrar no Sistema</a>
+                <a href="{{ url_for('cadastro') }}" class="btn btn-outline-secondary">Criar nova conta</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mt-2">
+    <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">🍿 Filmes</h5>
+                <p class="card-text text-muted">De "O Auto da Compadecida" a "A Múmia". Catalogue os melhores títulos.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">📺 Séries</h5>
+                <p class="card-text text-muted">Acompanhe "Supernatural", "Smallville" e muito mais.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">🏷️ Gêneros</h5>
+                <p class="card-text text-muted">Separe tudo por Comédia, Terror, Aventura e Drama.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

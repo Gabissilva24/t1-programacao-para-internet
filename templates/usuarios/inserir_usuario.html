@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block conteudo %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow border-0">
+            <div class="card-header bg-primary text-white py-3">
+                <h4 class="mb-0"><i class="bi bi-person-plus"></i> Cadastrar Novo Usuário</h4>
+            </div>
+            <div class="card-body p-4">
+                <form action="{{ url_for('inserir_usuario') }}" method="POST">
+                    
+                    <div class="mb-3">
+                        <label for="nome" class="form-label fw-bold">Nome Completo</label>
+                        <input type="text" name="nome" id="nome" class="form-control" placeholder="Digite o nome do usuário" required>
+                        <div class="form-text">Campo obrigatório.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="email" class="form-label fw-bold">E-mail</label>
+                        <input type="email" name="email" id="email" class="form-control" placeholder="exemplo@cine.com" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="tipo" class="form-label fw-bold">Tipo de Perfil</label>
+                        <select name="tipo" id="tipo" class="form-select">
+                            <option value="Administrador">Administrador</option>
+                            <option value="Editor">Editor</option>
+                            <option value="Visualizador">Visualizador</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="senha" class="form-label fw-bold">Senha Provisória</label>
+                        <input type="password" name="senha" id="senha" class="form-control" placeholder="Digite uma senha" required>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-success">
+                            <i class="bi bi-check-circle"></i> Salvar Usuário
+                        </button>
+                        <a href="{{ url_for('listar_usuarios') }}" class="btn btn-outline-secondary">
+                            Cancelar
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
