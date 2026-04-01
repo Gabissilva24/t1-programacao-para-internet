@@ -1,0 +1,15 @@
+/* Estilo do rodapé personalizado - Requisito do Professor */
+footer {
+    background-color: #212529 !important; /* Cor de cinema (Grafite escuro) */
+    color: #ffffff !important;           /* Força o texto branco */
+    border-top: 1px solid #444 !important; /* Borda sutil para separar do fundo */
+    margin-top: 3rem;
+    padding: 2rem 0;
+}
+
+/* Garante que o parágrafo dentro do footer herde o branco */
+footer p {
+    color: #ffffff !important;
+    margin: 0;
+    opacity: 0.9; /* Deixa o branco levemente suave, mas visível */
+}

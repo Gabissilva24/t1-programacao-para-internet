@@ -1,23 +1,46 @@
 {% extends 'base_publica.html' %}
+<!-- Usa um layout base (estrutura padrão da página) -->
 
 {% block conteudo %}
+<!-- Início do conteúdo da página -->
+
 <div class="row justify-content-center">
     <div class="col-md-4">
+
+        <!-- Card central (caixinha do login) -->
         <div class="card shadow-sm border-0">
             <div class="card-body p-5">
+
+                <!-- Título -->
                 <h2 class="text-center mb-4">Login</h2>
+
+                <!-- Formulário que envia dados para a rota 'login' -->
                 <form action="{{ url_for('login') }}" method="POST">
+
+                    <!-- Campo de E-mail -->
                     <div class="mb-3">
                         <label for="email" class="form-label">E-mail</label>
+
+                        <!-- name="email" é usado no Flask para pegar o valor -->
                         <input type="email" name="email" class="form-control" id="email" placeholder="nome@exemplo.com" required>
                     </div>
+
+                    <!-- Campo de Senha -->
                     <div class="mb-3">
                         <label for="senha" class="form-label">Senha</label>
+
+                        <!-- Campo oculto (senha não aparece ao digitar) -->
                         <input type="password" name="senha" class="form-control" id="senha" placeholder="Sua senha" required>
                     </div>
+
+                    <!-- Botão de enviar formulário -->
                     <button type="submit" class="btn btn-primary w-100 py-2">Entrar</button>
                 </form>
+
+                <!-- Linha separadora -->
                 <hr class="my-4">
+
+                <!-- Link para cadastro -->
                 <div class="text-center">
                     <small>Não tem conta? <a href="{{ url_for('cadastro') }}">Cadastre-se</a></small>
                 </div>
@@ -26,3 +49,10 @@
     </div>
 </div>
 {% endblock %}
+<!-- Fim do conteúdo -->
+
+<!-- Fluxo do código: -->
+<!-- - Tela de login -->
+<!-- - - Usuário digita email e senha -->
+<!-- - - - Clica em Entrar -->
+<!-- - - - - Dados vão para o Flask (POST /login) -->

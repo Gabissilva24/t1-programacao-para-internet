@@ -1,50 +1,114 @@
 {% extends 'base.html' %}
+<!-- Usa um layout base (estrutura padrão do sistema logado) -->
 
 {% block conteudo %}
+<!-- Início do conteúdo da página -->
+
+<!-- Título + botão de novo usuário -->
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h2><i class="bi bi-people"></i> Gerenciamento de Usuários</h2>
+
+    <!-- Botão que leva para a tela de cadastro -->
     <a href="{{ url_for('inserir_usuario') }}" class="btn btn-primary">
-        <i class="bi bi-plus-circle"></i> Novo Usuário
+        <i class="bi bi-person-plus"></i> Novo Usuário
     </a>
 </div>
 
-<div class="card shadow-sm">
-    <div class="card-body p-0">
-        <table class="table table-hover table-bordered mb-0">
+<!-- Card que envolve a tabela -->
+<div class="card shadow-sm border-0">
+    <div class="table-responsive">
+
+        <!-- Tabela de usuários -->
+        <table class="table table-hover align-middle mb-0">
+
+            <!-- Cabeçalho da tabela -->
             <thead class="table-dark">
                 <tr>
-                    <th>ID</th>
-                    <th>Nome</th>
+                    <th style="width: 80px;">ID</th>
+                    <th>Usuário</th>
                     <th>E-mail</th>
                     <th>Tipo/Cargo</th>
                     <th class="text-center">Ações</th>
                 </tr>
             </thead>
+
             <tbody>
+
+                <!-- Loop: percorre todos os usuários enviados pelo Flask -->
                 {% for item in lista %}
                 <tr>
-                    <td>{{ item.id }}</td>
-                    <td>{{ item.nome }}</td>
+                    <!-- ID do usuário -->
+                    <td class="text-muted fw-bold">{{ item.id }}</td>
+
+                    <!-- Nome + "avatar" com inicial -->
+                    <td>
+                        <div class="d-flex align-items-center">
+
+                            <!-- Bolinha com a primeira letra do nome -->
+                            <div class="rounded-circle bg-secondary bg-opacity-10 text-secondary d-flex align-items-center justify-content-center me-2" style="width: 35px; height: 35px; font-weight: bold;">
+                                {{ item.nome[0] | upper }}
+                            </div>
+                            <!-- Nome completo -->
+                            <span class="fw-bold">{{ item.nome }}</span>
+                        </div>
+                    </td>
+
+                    <!-- Email -->
                     <td>{{ item.email }}</td>
-                    <td><span class="badge bg-info text-dark">{{ item.tipo }}</span></td>
+
+                    <!-- Tipo do usuário (Administrador ou outro) -->
+                    <td>
+                        <span class="badge 
+                            {% if item.tipo == 'Administrador' %}  
+                                bg-danger
+                            {% else %}
+                                bg-info text-dark
+                            {% endif %} p-2">
+
+                            {{ item.tipo }}
+                        </span>
+                    </td>
+
+                    <!-- Botões de ação -->
                     <td class="text-center">
-                        <button class="btn btn-sm btn-warning">Editar</button>
-                        <button class="btn btn-sm btn-danger" onclick="confirmarExclusao('{{ item.nome }}')">Excluir</button>
+                        <div class="d-flex gap-2 justify-content-center">
+
+                            <!-- Botão editar (ainda sem ação) -->
+                            <button class="btn btn-sm btn-warning rounded px-3">Editar</button>
+                            <!-- Botão excluir -->
+                            <button class="btn btn-sm btn-danger rounded px-3" onclick="confirmarExclusao('{{ item.nome }}')">Excluir</button>
+                        </div>
                     </td>
                 </tr>
                 {% endfor %}
+                <!-- Fim do loop -->
             </tbody>
         </table>
     </div>
 </div>
 {% endblock %}
+<!-- Fim do conteúdo -->
 
 {% block scripts %}
+<!-- Bloco de scripts JavaScript -->
 <script>
+    // Função chamada ao clicar em "Excluir"
     function confirmarExclusao(nome) {
-        if (confirm("Tem certeza que deseja excluir o usuário " + nome + "?")) {
-            alert("Simulação: Usuário excluído com sucesso!");
+        // Mostra uma confirmação
+        if (confirm("Deseja realmente excluir o usuário: " + nome + "?")) {
+            // Simulação de exclusão
+            alert("Simulação: Usuário removido!");
         }
     }
 </script>
 {% endblock %}
+
+
+<!-- Resumo do código:
+- Mostra todos os usuários em uma tabela
+- Usa um loop (for) para listar cada usuário
+Permite: -->
+
+<!-- cadastrar novo usuário -->
+<!-- editar (ainda não implementado) -->
+<!-- excluir (simulação) -->

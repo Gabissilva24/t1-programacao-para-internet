@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block conteudo %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-film"></i> Catálogo de Filmes</h2>
+    <a href="{{ url_for('inserir_filme') }}" class="btn btn-primary">
+        <i class="bi bi-plus-circle"></i> Novo Filme
+    </a>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-dark">
+                <tr>
+                    <th style="width: 100px;">Poster</th> 
+                    <th>Título e Detalhes</th>
+                    <th>Gênero</th>
+                    <th class="text-center">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for filme in lista %}
+                <tr>
+                    <td>
+                        <!-- Se tiver poster, exibe imagem; senão mostra ícone -->
+                        {% if filme.poster %}
+                            <img src="{{ url_for('static', filename='imgs/' + filme.poster) }}" 
+                                 alt="Poster" 
+                                 class="rounded shadow-sm" 
+                                 style="width: 60px; height: 85px; object-fit: cover;">
+                        {% else %}
+                            <div class="bg-light rounded d-flex align-items-center justify-content-center" style="width: 60px; height: 85px;">
+                                <i class="bi bi-camera-reels text-secondary fs-3"></i>
+                            </div>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <!-- Informações do filme: título, diretor e ano -->
+                        <div class="fw-bold fs-5 text-primary">{{ filme.titulo }}</div>
+                        <div class="text-muted small">
+                            <i class="bi bi-person-badge"></i> Direção: {{ filme.diretor }} | 
+                            <i class="bi bi-calendar3"></i> Ano: {{ filme.ano }}
+                        </div>
+                    </td>
+                    <td>
+                        <!-- Gênero do filme -->
+                        <span class="badge rounded-pill bg-info text-dark">{{ filme.genero }}</span>
+                    </td>
+                    <td class="text-center">
+                        <div class="d-flex gap-2 justify-content-center">
+                            <button class="btn btn-sm btn-warning rounded px-3">Editar</button>
+
+                            <button class="btn btn-sm btn-danger rounded px-3" onclick="confirmarExclusao('{{ filme.titulo }}')">Excluir</button>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function confirmarExclusao(titulo) {
+        if (confirm("Tem certeza que deseja excluir '" + titulo + "'?")) {
+            alert("Simulação: Registro removido.");
+        }
+    }
+</script>
+{% endblock %}

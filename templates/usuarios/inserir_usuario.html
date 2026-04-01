@@ -1,28 +1,48 @@
 {% extends 'base.html' %}
+<!-- Usa o layout base do sistema (geralmente com menu, navbar...) -->
 
 {% block conteudo %}
+<!-- Início do conteúdo da página -->
+
 <div class="row justify-content-center">
     <div class="col-md-6">
+
+        <!-- Card (caixinha do formulário) -->
         <div class="card shadow border-0">
+
+            <!-- Cabeçalho -->
             <div class="card-header bg-primary text-white py-3">
                 <h4 class="mb-0"><i class="bi bi-person-plus"></i> Cadastrar Novo Usuário</h4>
             </div>
+
+            <!-- Corpo -->
             <div class="card-body p-4">
+
+                <!-- Formulário que envia dados para a rota 'inserir_usuario' -->
                 <form action="{{ url_for('inserir_usuario') }}" method="POST">
                     
+                    <!-- Campo Nome -->
                     <div class="mb-3">
                         <label for="nome" class="form-label fw-bold">Nome Completo</label>
+                        
+                        <!-- name="nome" será usado no Flask -->
                         <input type="text" name="nome" id="nome" class="form-control" placeholder="Digite o nome do usuário" required>
+                        
+                        <!-- Texto de ajuda -->
                         <div class="form-text">Campo obrigatório.</div>
                     </div>
 
+                    <!-- Campo Email -->
                     <div class="mb-3">
                         <label for="email" class="form-label fw-bold">E-mail</label>
                         <input type="email" name="email" id="email" class="form-control" placeholder="exemplo@cine.com" required>
                     </div>
 
+                    <!-- Campo Tipo de Perfil -->
                     <div class="mb-3">
                         <label for="tipo" class="form-label fw-bold">Tipo de Perfil</label>
+                        
+                        <!-- Select (lista de opções) -->
                         <select name="tipo" id="tipo" class="form-select">
                             <option value="Administrador">Administrador</option>
                             <option value="Editor">Editor</option>
@@ -30,15 +50,23 @@
                         </select>
                     </div>
 
+                    <!-- Campo Senha -->
                     <div class="mb-4">
                         <label for="senha" class="form-label fw-bold">Senha Provisória</label>
+                        
+                        <!-- Campo de senha (oculto ao digitar) -->
                         <input type="password" name="senha" id="senha" class="form-control" placeholder="Digite uma senha" required>
                     </div>
 
+                    <!-- Botões -->
                     <div class="d-grid gap-2">
+
+                        <!-- Botão que envia o formulário -->
                         <button type="submit" class="btn btn-success">
                             <i class="bi bi-check-circle"></i> Salvar Usuário
                         </button>
+
+                        <!-- Botão para voltar para lista de usuários -->
                         <a href="{{ url_for('listar_usuarios') }}" class="btn btn-outline-secondary">
                             Cancelar
                         </a>
@@ -49,3 +77,13 @@
     </div>
 </div>
 {% endblock %}
+<!-- Fim do conteúdo -->
+
+<!-- Esse é o formulário de cadastro de usuário dentro do sistema (área logada): é a tela de criar novo usuário -->
+
+Resumo do código:
+
+<!-- Tela para cadastrar usuário -->
+<!-- - Preenche formulário -->
+<!-- - - Clica em Salvar -->
+<!-- - - - Dados vão para o Flask (POST /usuarios/inserir) -->

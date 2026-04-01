@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block conteudo %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow border-0">
+            <div class="card-header bg-dark text-white py-3">
+                <h4 class="mb-0"><i class="bi bi-tag"></i> Adicionar Novo Gênero</h4>
+            </div>
+            <div class="card-body p-4">
+                <!-- Formulário para cadastrar um novo gênero -->
+                <form action="{{ url_for('inserir_genero') }}" method="POST">
+                    
+                    <div class="mb-3">
+                        <label for="nome" class="form-label fw-bold">Nome do Gênero</label>
+                        <!-- Nome do gênero -->
+                        <input type="text" name="nome" id="nome" class="form-control form-control-lg" placeholder="Ex: Suspense, Ficção, Documentário" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="descricao" class="form-label fw-bold">Descrição do Gênero</label>
+                         <!-- Descrição (campo de texto maior utilizando textarea) -->
+                        <textarea name="descricao" id="descricao" class="form-control" rows="4" placeholder="Descreva brevemente que tipo de conteúdo pertence a este gênero..."></textarea>
+                    </div>
+
+                    <!-- Botões de ação -->
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-success btn-lg">
+                            <i class="bi bi-check-circle"></i> Salvar Gênero
+                        </button>
+                        <a href="{{ url_for('listar_generos') }}" class="btn btn-light">
+                            Cancelar
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+<!-- Utilizei <textarea name="descricao"> que diferente de input, permite texto maior -->

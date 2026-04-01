@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equipe - CineCatálogo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        body {
+            /* Fundo claro com um tom de cinza azulado muito suave */
+            background-color: #f8f9fa;
+            color: #212529;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            font-family: 'Inter', -apple-system, sans-serif;
+        }
+        .profile-card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+            /* Sombra suave e elegante, sem parecer pesada */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e9ecef;
+        }
+        .profile-img {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            object-fit: cover;
+            /* Sombra suave em vez de borda colorida para um look mais clean */
+            box-shadow: 4px solid #ffffff;
+            outline: 2px solid #c4ccd9;
+            margin-bottom: 2rem;
+        }
+        h1 {
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin-bottom: 0.2rem;
+            color: #212529;
+        }
+        .subtitle {
+            color: #0d6efd;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: block;
+            margin-bottom: 1.5rem;
+        }
+        .info-container {
+            text-align: left;
+            background: #f1f3f5;
+            border-radius: 12px;
+            padding: 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+        .info-container p {
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: #495057;
+            display: flex;
+            align-items: center;
+        }
+        .info-container i {
+            color: #0d6efd;
+            margin-right: 10px;
+        }
+        .bio {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #4a4a4a;
+            background: #fff;
+            padding: 0 10px;
+        }
+        .destaque-materia {
+            color: #0d6efd; /* O azul que você já usa */
+            font-style: italic;
+        }
+        .btn-back {
+            display: inline-block;
+            padding: 0.8rem 2.5rem;
+            background-color: #212529;
+            color: white;
+            text-decoration: none;
+            border-radius: 50px; /* Botão pilula é mais moderno */
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-back:hover {
+            background-color: #000;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="profile-card">
+        <img src="{{ url_for('static', filename='imgs/foto.jpg') }}" alt="Foto da Desenvolvedora" class="profile-img">
+        
+        <h1 class="fw-bold">Gabriele Soares da Silva</h1>
+        <p class="text-primary fw-bold">Desenvolvedora</p>
+        
+        <hr class="my-4 opacity-25">
+
+        <div class="text-start mb-4">
+            <p><i class="bi bi-envelope-at-fill text-primary me-2"></i> gabriele.silva2@aluno.cps.sp.gov.br</p>
+            <p><i class="bi bi-mortarboard-fill text-primary me-2"></i> Gestão da Tecnologia da Informação</p>
+        </div>
+
+        <div class="bio">
+            <p>"Estudante de tecnologia com foco em desenvolvimento. Este projeto foi desenvolvido como parte da disciplina de <span class="destaque-materia">Programação para Internet</span>, consolidando o aprendizado em Python e Flask ao unir a organização de dados com uma interface intuitiva para o usuário."</p>
+        </div>
+
+        <a href="{{ url_for('listar_usuarios') }}" class="btn btn-outline-light btn-back">
+            <i class="bi bi-arrow-left me-2"></i> Voltar ao Sistema
+        </a>
+    </div>
+
+</body>
+</html>

@@ -51,7 +51,7 @@
         {% endblock %}
     </main>
 
-    <footer class="text-center mt-5 py-3 border-top">
+    <footer class="text-center mt-5 py-3">
         <p>&copy; 2026 - Desenvolvido por Gabriele Soares da Silva</p>
     </footer>
 
@@ -59,3 +59,9 @@
     {% block scripts %}{% endblock %}
 </body>
 </html>
+
+{# Este é o arquivo base. Evita repetir menu e rodapé em todas a as paginas #}
+
+{# {% block conteudo %} é onde o Flask insere o conteúdo das páginas #}
+
+{# Mensagens flash aparecem automaticamente abaixo do menu #}

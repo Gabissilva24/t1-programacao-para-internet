@@ -35,7 +35,7 @@
         {% endblock %}
     </main>
 
-    <footer class="text-center mt-5 py-4 text-muted border-top">
+    <footer class="text-center mt-5 py-4">
         <p>&copy; 2026 - CineCatálogo | Desenvolvido por Gabriele Soares da Silva</p>
     </footer>
 
@@ -44,3 +44,8 @@
     {% block scripts %}{% endblock %}
 </body>
 </html>
+
+<!-- Criei o base_publica.html para as paginas de Login e Cadastro. Ele e diferente do base.html porque nao exibe o menu completo do sistema, 
+protegendo a navegacao antes do usuario estar logado -->
+
+<!-- Aqui tambem inclui o sistema de mensagens Flash, para que quando o usuario termine um cadastro, o sistema mostre um aviso de 'Sucesso' antes dele fazer o login -->
