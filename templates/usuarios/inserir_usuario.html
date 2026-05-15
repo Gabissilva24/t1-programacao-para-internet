@@ -50,6 +50,17 @@
                         </select>
                     </div>
 
+                    <!-- Campo Função -->
+                    <div class="mb-3">
+                        <label for="funcao" class="form-label fw-bold">Função</label>
+                        <select name="funcao" id="funcao" class="form-select">
+                            <option value="">Selecione uma função</option>
+                            {% for funcao in funcoes %}
+                                <option value="{{ funcao.id }}">{{ funcao.nome }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
                     <!-- Campo Senha -->
                     <div class="mb-4">
                         <label for="senha" class="form-label fw-bold">Senha Provisória</label>

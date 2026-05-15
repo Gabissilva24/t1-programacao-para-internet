@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+<!-- Usa o layout base do sistema -->
+ 
+{% block conteudo %}
+ 
+<div class="row justify-content-center">
+    <div class="col-md-7">
+ 
+        <!-- Card do formulário -->
+        <div class="card shadow border-0">
+ 
+            <!-- Cabeçalho -->
+            <div class="card-header bg-primary text-white py-3">
+                <h4 class="mb-0"><i class="bi bi-shield-plus"></i> Cadastrar Nova Função</h4>
+            </div>
+ 
+            <!-- Corpo -->
+            <div class="card-body p-4">
+ 
+                <!-- Formulário que envia dados para a rota 'inserir_funcao' -->
+                <form action="{{ url_for('inserir_funcao') }}" method="POST">
+ 
+                    <!-- Campo Nome da Função -->
+                    <div class="mb-3">
+                        <label for="nome" class="form-label fw-bold">Nome da Função</label>
+                        <input
+                            type="text"
+                            name="nome"
+                            id="nome"
+                            class="form-control"
+                            placeholder="Ex: Administrador, Editor..."
+                            required
+                        >
+                        <div class="form-text">Campo obrigatório.</div>
+                    </div>
+ 
+                    <!-- Campo Status -->
+                    <div class="mb-3">
+                        <label for="status" class="form-label fw-bold">Status</label>
+                        <select name="status" id="status" class="form-select">
+                            <option value="ativo">Ativo</option>
+                            <option value="inativo">Inativo</option>
+                        </select>
+                    </div>
+ 
+                    <!-- Campo Descrição -->
+                    <div class="mb-3">
+                        <label for="descricao" class="form-label fw-bold">Descrição</label>
+                        <textarea
+                            name="descricao"
+                            id="descricao"
+                            class="form-control"
+                            rows="3"
+                            placeholder="Descreva as responsabilidades desta função..."
+                        ></textarea>
+                    </div>
+ 
+                    <!-- Campo Permissões -->
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Permissões</label>
+                        <div class="border rounded p-3 bg-light">
+ 
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" name="permissoes" value="dashboard" id="perm_dashboard">
+                                <label class="form-check-label" for="perm_dashboard">
+                                    <i class="bi bi-speedometer2 text-primary me-1"></i> Dashboard
+                                </label>
+                            </div>
+ 
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" name="permissoes" value="gerenciar_usuarios" id="perm_usuarios">
+                                <label class="form-check-label" for="perm_usuarios">
+                                    <i class="bi bi-people text-primary me-1"></i> Gerenciar Usuários
+                                </label>
+                            </div>
+ 
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" name="permissoes" value="gerenciar_funcoes" id="perm_funcoes">
+                                <label class="form-check-label" for="perm_funcoes">
+                                    <i class="bi bi-shield text-primary me-1"></i> Gerenciar Funções
+                                </label>
+                            </div>
+ 
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" name="permissoes" value="gerenciar_tarefas" id="perm_tarefas">
+                                <label class="form-check-label" for="perm_tarefas">
+                                    <i class="bi bi-check2-square text-primary me-1"></i> Gerenciar Filmes
+                                </label>
+                            </div>
+ 
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="permissoes" value="emitir_relatorios" id="perm_relatorios">
+                                <label class="form-check-label" for="perm_relatorios">
+                                    <i class="bi bi-file-earmark-bar-graph text-primary me-1"></i> Emitir Relatórios
+                                </label>
+                            </div>
+ 
+                        </div>
+                        <div class="form-text">Selecione as permissões que esta função terá acesso.</div>
+                    </div>
+ 
+                    <!-- Botões -->
+                    <div class="d-grid gap-2">
+ 
+                        <!-- Botão salvar -->
+                        <button type="submit" class="btn btn-success">
+                            <i class="bi bi-check-circle"></i> Salvar Função
+                        </button>
+ 
+                        <!-- Botão cancelar / voltar para lista de funções -->
+                        <a href="{{ url_for('listar_funcoes') }}" class="btn btn-outline-secondary">
+                            Cancelar
+                        </a>
+ 
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+ 
+{% endblock %}

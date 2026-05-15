@@ -1,8 +1,11 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
+from db import iniciar_bd
 
 app = Flask(__name__)
 # A secret_key é necessária para utilizar o sistema de mensagens flash
 app.secret_key = 'cinecatalogo_t1_ppi_secret_key'
+
+iniciar_bd() # inicia o banco de dados
 
 
 # --- DADOS SIMULADOS (HARDCODED) ---
@@ -37,6 +40,12 @@ generos = [
     {"id": 3, "nome": "Ação/Aventura", "descricao": "Muita adrenalina e exploração (Ex: A Múmia)"},
     {"id": 4, "nome": "Drama", "descricao": "Histórias intensas e emocionantes (Ex: Peaky Blinders)"},
     {"id": 5, "nome": "Animação", "descricao": "Desenhos para todas as idades (Ex: Os Sem-Floresta)"}
+]
+
+funcoes = [
+    {"id": 1, "nome": "Administrador", "status": "ativo", "descricao": "Acesso total ao sistema"},
+    {"id": 2, "nome": "Editor", "status": "ativo", "descricao": "Pode gerenciar conteúdo"},
+    {"id": 3, "nome": "Visualizador", "status": "inativo", "descricao": "Apenas visualiza"}
 ]
 
 
@@ -88,7 +97,7 @@ def inserir_usuario():
         else:
             flash(f'Usuário {nome} cadastrado!', 'success')
             return redirect(url_for('listar_usuarios'))
-    return render_template('usuarios/inserir_usuario.html')
+    return render_template('usuarios/inserir_usuario.html', funcoes=funcoes)
 
 
 # --- ENTIDADE: FILMES ---
@@ -147,6 +156,22 @@ def inserir_genero():
 @app.route('/equipe')
 def equipe():
     return render_template('sobre_equipe.html')
+
+# --- ENTIDADE: FUNCOES ---
+@app.route('/funcoes/listar')
+def listar_funcoes():
+    return render_template('funcoes/listar_funcoes.html', lista=funcoes)
+
+@app.route('/funcoes/inserir', methods=['GET', 'POST'])
+def inserir_funcao():
+    if request.method == 'POST':
+        nome = request.form.get('nome')
+        if not nome:
+            flash('Erro! O nome da função é obrigatório.', 'danger')
+        else:
+            flash(f'Função {nome} cadastrada!', 'success')
+            return redirect(url_for('listar_funcoes'))
+    return render_template('funcoes/inserir_funcao.html')
 
 
 if __name__ == '__main__': # Verifica se esse arquivo esta sendo executado diretamente
