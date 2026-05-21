@@ -23,13 +23,13 @@ CREATE TABLE IF NOT EXISTS funcoes(
         ON UPDATE CURRENTE_TIMESTAMP
 )
 
--- DROP TABLE IF EXISTS clientes;
+-- DROP TABLE IF EXISTS usuarios;
 
 CREATE TABLE IF NOT EXISTS usuarios(
     id_usuario BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     nome_usuario VARCHAR(50) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
-    tipo_perfil,
+    tipo_perfil VARCHAR(50),
     senha VARCHAR(255) NOT NULL
     status ENUM ('Ativo', 'Inativo') DEFAULT 'Ativo',
 
@@ -45,3 +45,52 @@ CREATE TABLE IF NOT EXISTS usuarios(
     FOREIGN KEY (funcao_id) REFERENCES funcoes (id_funcao)
 )
 
+
+-- DROP TABLE IF EXISTS generos;
+
+CREATE TABLE IF NOT EXISTS generos (
+    id_genero BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL UNIQUE,
+    descricao TEXT,
+
+    -- logs
+    criado_em DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    alterado_em DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP 
+        ON UPDATE CURRENT_TIMESTAMP
+)
+
+-- DROP TABLE IF EXISTS filmes;
+
+CREATE TABLE IF NOT EXISTS filmes (
+    id_filme BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    titulo VARCHAR(255) NOT NULL,
+    diretor VARCHAR(150),
+    ano SMALLINT UNSIGNED,
+    genero_id BIGINT UNSIGNED,
+    status ENUM('Ativo','Inativo') NOT NULL DEFAULT 'Ativo',
+
+    -- logs
+    criado_em DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    alterado_em DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP 
+        ON UPDATE CURRENT_TIMESTAMP,
+
+     -- Cria o relacionamento entre tabelas
+    CONSTRAINT fk_filme_genero FOREIGN KEY (genero_id) REFERENCES generos(id) ON DELETE SET NULL ON UPDATE CASCADE,
+    INDEX idx_titulo (titulo),
+    INDEX idx_ano (ano)
+)
+
+-- DROP TABLE IF EXISTS series;
+
+CREATE TABLE IF NOT EXISTS series (
+    id_serie BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    titulo VARCHAR(255) NOT NULL,
+    temporadas INT UNSIGNED DEFAULT 0,
+    plataforma VARCHAR(150),
+    status ENUM('Ativo','Inativo') NOT NULL DEFAULT 'Ativo',
+
+    criado_em DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    alterado_em DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP 
+        ON UPDATE CURRENT_TIMESTAMP,
+    INDEX idx_titulo_series (titulo)
+)
