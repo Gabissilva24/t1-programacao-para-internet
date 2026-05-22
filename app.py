@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
-from db import iniciar_bd
+from db import iniciar_bd, execute_query
 
 app = Flask(__name__)
 # A secret_key é necessária para utilizar o sistema de mensagens flash
@@ -160,14 +160,38 @@ def equipe():
 # --- ENTIDADE: FUNCOES ---
 @app.route('/funcoes/listar')
 def listar_funcoes():
-    return render_template('funcoes/listar_funcoes.html', lista=funcoes)
+    sql = '''
+           SELECT 
+            id_funcao,
+            nome,
+            status,
+            descricao,
+            permissoes,
+            gerenciar_usuarios,
+            gerenciar_funcoes,
+            gerenciar_filmes,
+            criado_em,
+            alterado_em
+        FROM funcoes
+        ORDER BY id_funcao DESC;
+
+        '''
+    lista_dados = execute_query(sql, fetch=True)
+    return render_template('funcoes/listar_funcoes.html', dados=lista_dados)
 
 @app.route('/funcoes/inserir', methods=['GET', 'POST'])
 def inserir_funcao():
     if request.method == 'POST':
-        nome = request.form.get('nome')
+        nome = request.form.get('nome', '').strip()
+        status = request.form.get('status', 'Ativo').strip()
+        descricao = request.form.get('descricao', '').strip()
+        gerenciar_usuarios = 1 if request.form.get('gerenciar_usuarios', '') else 0
+        gerenciar_funcoes = 1 if request.form.get('gerenciar_funcoes', '') else 0
+        gerenciar_filmes = 1 if request.form.get('gerenciar_filmes', '') else 0
+
         if not nome:
-            flash('Erro! O nome da função é obrigatório.', 'danger')
+            flash('O campo <b>NOME</b> é obrigatório.', 'danger')
+            return redirect(url_for('listar_funcoes'))
         else:
             flash(f'Função {nome} cadastrada!', 'success')
             return redirect(url_for('listar_funcoes'))

@@ -19,21 +19,27 @@ _DB_PARAMS = {
     'autocommit':         False,      # exige commit() explícito
 }
 
+_pool = None 
+
 # Pool criado uma única vez quando o módulo é carregado pela primeira vez.
 # conn.close() devolve a conexão ao pool — não fecha fisicamente.
-def retorna_pool():
-    _pool = pooling.MySQLConnectionPool(
-        pool_name='webapp_pool',
-        pool_size=5,           # conexões abertas permanentemente
-        pool_reset_session=True,
-        **_DB_PARAMS
-    )
-    return _pool
+def criar_pool():
+    global _pool # Chama a variavel global
+
+    if _pool is None:
+        _pool = pooling.MySQLConnectionPool(
+            pool_name='webapp_pool',
+            pool_size=5,           # conexões abertas permanentemente
+            pool_reset_session=True,
+            **_DB_PARAMS
+        )
 
 
 def get_connection():
     """Retorna uma conexão do pool. Levanta Exception em caso de falha."""
     try:
+        if _pool is None:
+            criar_pool() # Garante que teremos um pool
         return _pool.get_connection()
     except Error as e:
         raise Exception(f'Não foi possível obter conexão do pool: {e}')
@@ -86,9 +92,9 @@ def iniciar_bd():
     try:
         conn = mysql.connector.connect(
             host = '127.0.0.1',
-            user = 'root'
-            password = ''
-            user_pure = True
+            user = 'root',
+            password = '',
+            use_pure = True
         )
         cursor = conn.cursor()
 

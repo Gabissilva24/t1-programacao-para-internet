@@ -37,16 +37,16 @@
                 </tr>
             </thead>
             <tbody>
-                {% for funcao in lista %}
+                {% for d in dados %}
                 <tr>
-                    <td>{{ funcao.id }}</td>
-                    <td><strong>{{ funcao.nome }}</strong></td>
-                    <td>{{ funcao.descricao }}</td>
+                    <td>{{ d.id_funcao }}</td>
+                    <td><strong>{{ d.nome }}</strong></td>
+                    <td>{{ d.descricao }}</td>
                     <td>
-                        {% if funcao.status == 'ativo' %}
-                            <span class="badge bg-success">Ativo</span>
+                        {% if d.status == 'ativo' %}
+                            <span class="badge bg-success">{{ d.status }}</span>
                         {% else %}
-                            <span class="badge bg-secondary">Inativo</span>
+                            <span class="badge bg-danger">{{ d.status }}</span>
                         {% endif %}
                     </td>
                     <td class="text-center">
