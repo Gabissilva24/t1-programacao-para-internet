@@ -138,7 +138,18 @@ def inserir_series():
 # --- ENTIDADE: GENEROS ---
 @app.route('/generos/listar')
 def listar_generos():
-    return render_template('generos/listar_generos.html', lista=generos)
+    sql = '''
+        SELECT
+            id_genero,
+            nome,
+            descricao,
+            criado_em,
+            alterado_em
+        FROM generos
+        ORDER BY id_genero DESC
+    '''
+    lista_dados = execute_query(sql, fetch=True)
+    return render_template('generos/listar_generos.html', dados=lista_dados)
 
 @app.route('/generos/inserir', methods=['GET', 'POST'])
 def inserir_genero():
@@ -192,9 +203,25 @@ def inserir_funcao():
         if not nome:
             flash('O campo <b>NOME</b> é obrigatório.', 'danger')
             return redirect(url_for('listar_funcoes'))
+        # else:
+        #     flash(f'Função {nome} cadastrada!', 'success')
+        #     return redirect(url_for('listar_funcoes'))
         else:
-            flash(f'Função {nome} cadastrada!', 'success')
-            return redirect(url_for('listar_funcoes'))
+            # VALIDACAO: nome duplicado
+            sql_verificar = 'SELECT id_funcao FROM funcoes WHERE nome = %s'
+            existente = execute_query(sql_verificar, params=(nome,), fetch=True)
+            if existente:
+                flash(f'Erro! Já existe uma função com o nome <b>{nome}</b>.', 'danger')
+            else:
+                # INSERT no banco
+                sql = '''
+                    INSERT INTO funcoes (nome, status, descricao, gerenciar_usuarios, gerenciar_funcoes, gerenciar_filmes)
+                    VALUES (%s, %s, %s, %s, %s, %s)
+                '''
+                execute_query(sql, params=(nome, status, descricao, gerenciar_usuarios, gerenciar_funcoes, gerenciar_filmes))
+                flash(f'Função {nome} cadastrada!', 'success')
+                return redirect(url_for('listar_funcoes'))
+
     return render_template('funcoes/inserir_funcao.html')
 
 
