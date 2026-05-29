@@ -55,8 +55,8 @@
                         <label for="funcao" class="form-label fw-bold">Função</label>
                         <select name="funcao" id="funcao" class="form-select">
                             <option value="">Selecione uma função</option>
-                            {% for funcao in funcoes %}
-                                <option value="{{ funcao.id }}">{{ funcao.nome }}</option>
+                            {% for f in lista_funcoes %}
+                                <option value="{{ f.id_funcao }}">{{ f.nome }}</option>
                             {% endfor %}
                         </select>
                     </div>

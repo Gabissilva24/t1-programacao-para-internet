@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
-from db import iniciar_bd, execute_query
+from db import iniciar_bd, execute_query, execute_one
+from werkzeug.security import generate_password_hash
+
 
 app = Flask(__name__)
 # A secret_key é necessária para utilizar o sistema de mensagens flash
@@ -84,20 +86,70 @@ def logout():
 # --- ENTIDADE: USUARIOS ---
 @app.route('/usuarios/listar')
 def listar_usuarios():
+    sql = '''
+            SELECT
+                id_usuario,
+                u.nome_usuario AS nome,
+                email,
+                f.nome AS funcao,
+                u.status
+            FROM usuarios AS u
+            INNER JOIN funcoes AS f ON u.funcao_id = f.id_funcao
+            ORDER BY id_usuario DESC
+        '''
+    lista_dados = execute_query(sql, fetch=True)
     # Renderiza (abre) a lista de usuarios passando a lista hardcoded 'usuarios' para o Jinja2
-    return render_template('usuarios/listar_usuarios.html', lista=usuarios)
+    return render_template('usuarios/listar_usuarios.html', dados=lista_dados)
 
 @app.route('/usuarios/inserir', methods=['GET', 'POST'])
 def inserir_usuario():
+
+    sql = 'SELECT id_funcao, nome FROM funcoes'
+    lista_funcoes = execute_query(sql, fetch=True)
+
     if request.method == 'POST': # O request e um objeto do Flask que representa tudo que veio da requisicao do usuario.
-        nome = request.form.get('nome') # pega o valor digitado no campo nome
+        nome = request.form.get('nome', '').strip() # pega o valor digitado no campo nome
+        email = request.form.get('email', '').strip()
+        tipo_perfil = request.form.get('tipo_perfil', '').strip()
+        status = request.form.get('status', 'Ativo').strip()
+        
         # VALIDACAO NO BACK-END: Verifica se os campos obrigatorios foram preenchidos
         if not nome:
             flash(f'Erro! O campo nome é obrigatório.', 'danger')
+
+        if senha != confirmar_senha:
+            flash(f'As senhas não conferem.', 'danger')
+            return redirect(url_for('inserir_usuario'))
+
         else:
             flash(f'Usuário {nome} cadastrado!', 'success')
             return redirect(url_for('listar_usuarios'))
-    return render_template('usuarios/inserir_usuario.html', funcoes=funcoes)
+        
+    sql = '''SELECT nome (*) AS qtde FROM usuarios
+            WHERE email = %s OR cpf = %s
+                '''
+    existente = execute_one(sql, (email, cpf))
+    if existente:
+        flash(f'E-mail ou CPF já cadastrados', 'danger')
+
+    senha_hash = generate_password_hash(senha)
+
+        try:
+            sql = '''INSERT INTO funcoes (nome_usuario, email, tipo_perfil, senha, status)
+                VALUES (%s, %s, %s, %s, %s, %s)
+            '''
+            dados = (nome, email, tipo_perfil, senha, status)
+            execute_query(sql, dados)
+            flash(f'A função <b> {nome} </b> inserida com sucesso!', 'success')
+            return redirect(url_for('listar_funcoes'))
+
+        except Exception as e:
+            flash(f'Erro ao salvar {e}', 'danger')
+            return redirect(url_for('inserir_funcoes'))
+
+    # nesse sql tem email e senha, verificar se no usuario tem realmente esses campos. Verificar qual nome está no campo senha no formulario de inserir_usuario, fica no name=
+
+    return render_template('usuarios/inserir_usuario.html', lista_funcoes=lista_funcoes)
 
 
 # --- ENTIDADE: FILMES ---
@@ -206,22 +258,37 @@ def inserir_funcao():
         # else:
         #     flash(f'Função {nome} cadastrada!', 'success')
         #     return redirect(url_for('listar_funcoes'))
-        else:
-            # VALIDACAO: nome duplicado
-            sql_verificar = 'SELECT id_funcao FROM funcoes WHERE nome = %s'
-            existente = execute_query(sql_verificar, params=(nome,), fetch=True)
-            if existente:
-                flash(f'Erro! Já existe uma função com o nome <b>{nome}</b>.', 'danger')
-            else:
-                # INSERT no banco
-                sql = '''
-                    INSERT INTO funcoes (nome, status, descricao, gerenciar_usuarios, gerenciar_funcoes, gerenciar_filmes)
-                    VALUES (%s, %s, %s, %s, %s, %s)
-                '''
-                execute_query(sql, params=(nome, status, descricao, gerenciar_usuarios, gerenciar_funcoes, gerenciar_filmes))
-                flash(f'Função {nome} cadastrada!', 'success')
-                return redirect(url_for('listar_funcoes'))
+        # else:
+        #     # VALIDACAO: nome duplicado
+        #     sql_verificar = 'SELECT id_funcao FROM funcoes WHERE nome = %s'
+        #     existente = execute_query(sql_verificar, params=(nome,), fetch=True)
+        #     if existente:
+        #         flash(f'Erro! Já existe uma função com o nome <b>{nome}</b>.', 'danger')
+        #     else:
+        #         # INSERT no banco
+        #         sql = '''
+        #             INSERT INTO funcoes (nome, status, descricao, gerenciar_usuarios, gerenciar_funcoes, gerenciar_filmes)
+        #             VALUES (%s, %s, %s, %s, %s, %s)
+        #         '''
+        #         dados = (nome, status, descricao, gerenciar_usuarios, gerenciar_funcoes, gerenciar_filmes)
+        #         execute_query(sql, dados)
+        #         flash(f'Função {nome} cadastrada!', 'success')
+        #         return redirect(url_for('inserir_funcoes'))
+        
+        try:
+            sql = '''INSERT INTO funcoes (nome, status, descricao, gerenciar_usuarios, gerenciar_funcoes, gerenciar_filmes)
+                VALUES (%s, %s, %s, %s, %s, %s)
+            '''
+            dados = (nome, status, descricao, gerenciar_usuarios, gerenciar_funcoes, gerenciar_filmes)
+            execute_query(sql, dados)
+            flash(f'A função <b> {nome} </b> inserida com sucesso!', 'success')
+            return redirect(url_for('listar_funcoes'))
 
+        except Exception as e:
+            flash(f'Erro ao salvar {e}', 'danger')
+            return redirect(url_for('inserir_funcoes'))
+        
+    # Entra aqui somente se for GET
     return render_template('funcoes/inserir_funcao.html')
 
 

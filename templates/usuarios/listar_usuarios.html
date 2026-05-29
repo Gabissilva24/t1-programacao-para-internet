@@ -35,10 +35,10 @@
             <tbody>
 
                 <!-- Loop: percorre todos os usuários enviados pelo Flask -->
-                {% for item in lista %}
+                {% for item in dados %}
                 <tr>
                     <!-- ID do usuário -->
-                    <td class="text-muted fw-bold">{{ item.id }}</td>
+                    <td class="text-muted fw-bold">{{ item.id_usuario }}</td>
 
                     <!-- Nome + "avatar" com inicial -->
                     <td>

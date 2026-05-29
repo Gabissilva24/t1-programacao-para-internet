@@ -1,4 +1,4 @@
-DROP DATABASE IF EXISTS t1_programacao;
+--DROP DATABASE IF EXISTS t1_programacao;
 
 CREATE DATABASE IF NOT EXISTS t1_programacao
     CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
