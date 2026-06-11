@@ -24,10 +24,11 @@
             <!-- Cabeçalho da tabela -->
             <thead class="table-dark">
                 <tr>
-                    <th style="width: 80px;">ID</th>
+                    <th>#</th>
                     <th>Usuário</th>
                     <th>E-mail</th>
-                    <th>Tipo/Cargo</th>
+                    <th>Função</th>
+                    <th>Status</th>
                     <th class="text-center">Ações</th>
                 </tr>
             </thead>
@@ -59,25 +60,48 @@
                     <!-- Tipo do usuário (Administrador ou outro) -->
                     <td>
                         <span class="badge 
-                            {% if item.tipo == 'Administrador' %}  
-                                bg-danger
-                            {% else %}
+                            {% if item.funcao == 'Administrador' %}  
+                                bg-success
+                            {% elif item.funcao == 'Editor' %}
                                 bg-info text-dark
+                            {% else %}
+                                bg-warning text-dark
                             {% endif %} p-2">
-
-                            {{ item.tipo }}
+                            {{ item.funcao }}
                         </span>
+                    </td>
+
+                    <td>
+                        {% if item.status == 'Ativo' %}
+                        <span class="badge bg-success">{{ item.status }}</span>
+                        {% else %}
+                        <span class="badge bg-secondary">{{ item.status }}</span>
+                        {% endif %}
                     </td>
 
                     <!-- Botões de ação -->
                     <td class="text-center">
                         <div class="d-flex gap-2 justify-content-center">
 
-                            <!-- Botão editar (ainda sem ação) -->
-                            <button class="btn btn-sm btn-warning rounded px-3">Editar</button>
+                            <!-- Botão editar -->
+                            <a href="{{ url_for('editar_usuario', id=item.id_usuario) }}" class="btn btn-sm btn-outline-primary me-1">
+                                Editar
+                            </a>
                             <!-- Botão excluir -->
-                            <button class="btn btn-sm btn-danger rounded px-3" onclick="confirmarExclusao('{{ item.nome }}')">Excluir</button>
+                            <button class="btn btn-sm btn-outline-danger"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#modalExcluir"
+                                    data-id="{{ item.id_usuario }}"
+                                    data-nome="{{ item.nome }}">
+                                Excluir
+                            </button>
                         </div>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="6" class="text-center text-muted py-4">
+                        Nenhum usúario cadastrado ainda.
                     </td>
                 </tr>
                 {% endfor %}
@@ -86,20 +110,50 @@
         </table>
     </div>
 </div>
+
+<!-- Modal de confirmação de exclusão -->
+<div class="modal fade" id="modalExcluir" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="bi bi-exclamation-triangle-fill text-danger me-2"></i>Confirmar Exclusão
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                Tem certeza que deseja excluir o usuário
+                <strong id="excluirNome"></strong>?
+                <br>Esta ação não poderá ser desfeita.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    Cancelar
+                </button>
+                <form id="formExcluir" method="POST">
+                    <button type="submit" class="btn btn-danger">
+                        <i class="bi bi-trash me-2"></i>Excluir
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 <!-- Fim do conteúdo -->
 
 {% block scripts %}
 <!-- Bloco de scripts JavaScript -->
 <script>
-    // Função chamada ao clicar em "Excluir"
-    function confirmarExclusao(nome) {
-        // Mostra uma confirmação
-        if (confirm("Deseja realmente excluir o usuário: " + nome + "?")) {
-            // Simulação de exclusão
-            alert("Simulação: Usuário removido!");
-        }
-    }
+    // Preenche o modal com os dados da linha clicada
+    const modalExcluir = document.getElementById('modalExcluir');
+    modalExcluir.addEventListener('show.bs.modal', function (event) {
+        const botao = event.relatedTarget;
+        const id = botao.getAttribute('data-id');
+        const nome = botao.getAttribute('data-nome');
+        document.getElementById('excluirNome').textContent = nome;
+        document.getElementById('formExcluir').action = '/usuarios/excluir/' + id;
+    });
 </script>
 {% endblock %}
 

@@ -32,22 +32,15 @@
                         <div class="form-text">Campo obrigatório.</div>
                     </div>
 
+                    <div class="mb-3">
+                        <label for="cpf" class="form-label fw-bold">CPF</label>
+                        <input type="text" name="cpf" id="cpf" class="form-control" value="{{ item.cpf if item else '' }}" placeholder="000.000.000-00" required>
+                    </div>
+
                     <!-- Campo Email -->
                     <div class="mb-3">
                         <label for="email" class="form-label fw-bold">E-mail</label>
                         <input type="email" name="email" id="email" class="form-control" placeholder="exemplo@cine.com" required>
-                    </div>
-
-                    <!-- Campo Tipo de Perfil -->
-                    <div class="mb-3">
-                        <label for="tipo" class="form-label fw-bold">Tipo de Perfil</label>
-                        
-                        <!-- Select (lista de opções) -->
-                        <select name="tipo" id="tipo" class="form-select">
-                            <option value="Administrador">Administrador</option>
-                            <option value="Editor">Editor</option>
-                            <option value="Visualizador">Visualizador</option>
-                        </select>
                     </div>
 
                     <!-- Campo Função -->
@@ -61,12 +54,25 @@
                         </select>
                     </div>
 
+                    <div class="mb-3">
+                        <label for="funcao" class="form-label fw-bold">Status</label>
+                        <select name="status" id="status" class="form-select">
+                            <option value="Ativo" {{ 'selected' if not item or item.status == 'Ativo' else '' }}>Ativo</option>
+                            <option value="Inativo" {{ 'selected' if item and item.status == 'Inativo' else '' }}>Inativo</option>
+                        </select>
+                    </div>
+
                     <!-- Campo Senha -->
                     <div class="mb-4">
-                        <label for="senha" class="form-label fw-bold">Senha Provisória</label>
-                        
+                        <label for="senha" class="form-label fw-bold">Senha</label>
                         <!-- Campo de senha (oculto ao digitar) -->
-                        <input type="password" name="senha" id="senha" class="form-control" placeholder="Digite uma senha" required>
+                        <input type="password" name="senha" id="senha" class="form-control" placeholder="Mínimo 8 caracteres" {{ 'required' if not item else '' }}>
+                    </div>
+
+                    <!-- Campo Confirmar Senha -->
+                    <div class="mb-4">
+                        <label for="senha" class="form-label fw-bold">Confirmar Senha</label>
+                        <input type="password" name="confirmar_senha" id="confirmar_senha" class="form-control" placeholder="Repita a senha" {{ 'required' if not item else '' }}>
                     </div>
 
                     <!-- Botões -->

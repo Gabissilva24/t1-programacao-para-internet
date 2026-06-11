@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block conteudo %}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+
+        <div class="card shadow border-0">
+
+            <!-- Cabeçalho -->
+            <div class="card-header bg-warning text-dark py-3">
+                <h4 class="mb-0"><i class="bi bi-person-gear"></i> Editar Usuário</h4>
+            </div>
+
+            <!-- Corpo -->
+            <div class="card-body p-4">
+
+                <form action="{{ url_for('editar_usuario', id=item.id_usuario) }}" method="POST">
+
+                    <!-- Campo Nome -->
+                    <div class="mb-3">
+                        <label for="nome" class="form-label fw-bold">Nome Completo</label>
+                        <input type="text" name="nome" id="nome" class="form-control"
+                               value="{{ item.nome_usuario }}" placeholder="Digite o nome do usuário" required>
+                        <div class="form-text">Campo obrigatório.</div>
+                    </div>
+
+                    <!-- Campo CPF -->
+                    <div class="mb-3">
+                        <label for="cpf" class="form-label fw-bold">CPF</label>
+                        <input type="text" name="cpf" id="cpf" class="form-control"
+                               value="{{ item.cpf }}" placeholder="000.000.000-00" required>
+                    </div>
+
+                    <!-- Campo Email -->
+                    <div class="mb-3">
+                        <label for="email" class="form-label fw-bold">E-mail</label>
+                        <input type="email" name="email" id="email" class="form-control"
+                               value="{{ item.email }}" placeholder="exemplo@cine.com" required>
+                    </div>
+
+                    <!-- Campo Função -->
+                    <div class="mb-3">
+                        <label for="funcao" class="form-label fw-bold">Função</label>
+                        <select name="funcao" id="funcao" class="form-select">
+                            <option value="">Selecione uma função</option>
+                            {% for f in lista_funcoes %}
+                                <option value="{{ f.id_funcao }}"
+                                    {{ 'selected' if f.id_funcao == item.funcao_id else '' }}>
+                                    {{ f.nome }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- Campo Status -->
+                    <div class="mb-3">
+                        <label for="status" class="form-label fw-bold">Status</label>
+                        <select name="status" id="status" class="form-select">
+                            <option value="Ativo" {{ 'selected' if item.status == 'Ativo' else '' }}>Ativo</option>
+                            <option value="Inativo" {{ 'selected' if item.status == 'Inativo' else '' }}>Inativo</option>
+                        </select>
+                    </div>
+
+                    <!-- Campo Senha -->
+                    <div class="mb-3">
+                        <label for="senha" class="form-label fw-bold">Nova Senha</label>
+                        <input type="password" name="senha" id="senha" class="form-control"
+                               placeholder="Deixe em branco para manter a senha atual">
+                        <div class="form-text">Preencha apenas se quiser alterar a senha.</div>
+                    </div>
+
+                    <!-- Campo Confirmar Senha -->
+                    <div class="mb-4">
+                        <label for="confirmar_senha" class="form-label fw-bold">Confirmar Nova Senha</label>
+                        <input type="password" name="confirmar_senha" id="confirmar_senha" class="form-control"
+                               placeholder="Repita a nova senha">
+                    </div>
+
+                    <!-- Botões -->
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-warning">
+                            <i class="bi bi-check-circle"></i> Salvar Alterações
+                        </button>
+                        <a href="{{ url_for('listar_usuarios') }}" class="btn btn-outline-secondary">
+                            Cancelar
+                        </a>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
