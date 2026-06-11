@@ -3,7 +3,7 @@
 {% block conteudo %}
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h2><i class="bi bi-tv"></i> Séries</h2>
-    <a href="{{ url_for('inserir_series') }}" class="btn btn-primary">
+    <a href="{{ url_for('inserir_serie') }}" class="btn btn-primary">
         <i class="bi bi-plus-circle"></i> Nova Série
     </a>
 </div>
@@ -59,16 +59,24 @@
 
                     <!-- Plataforma -->
                     <td>
-                        <span class="badge bg-dark text-white p-2">
-                            <i class="bi bi-play-fill"></i> {{ serie.plataforma }}
+                        <span class="badge rounded-pill bg-info text-dark">
+                            {{ serie.plataforma }}
                         </span>
                     </td>
 
                     <!-- Botões -->
                     <td class="text-center">
                         <div class="d-flex gap-2 justify-content-center">
-                            <button class="btn btn-sm btn-warning rounded px-3">Editar</button>
-                            <button class="btn btn-sm btn-danger rounded px-3" onclick="confirmarExclusao('{{ serie.titulo }}')">Excluir</button>
+                            <a href="{{ url_for('editar_serie', id=serie.id_serie) }}" class="btn btn-sm btn-outline-primary me-1">
+                                <i class="bi bi-pencil"></i> Editar
+                            </a>
+                            <button class="btn btn-sm btn-outline-danger"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#modalExcluir"
+                                    data-id="{{ serie.id_serie }}"
+                                    data-nome="{{ serie.titulo }}">
+                                <i class="bi bi-trash"></i> Excluir
+                            </button>
                         </div>
                     </td>
                 </tr>
@@ -77,14 +85,46 @@
         </table>
     </div>
 </div>
+
+<!-- Modal de confirmação de exclusão -->
+<div class="modal fade" id="modalExcluir" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="bi bi-exclamation-triangle-fill text-danger me-2"></i>Confirmar Exclusão
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                Tem certeza que deseja excluir a série
+                <strong id="excluirNome"></strong>?
+                <br>Esta ação não poderá ser desfeita.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    Cancelar
+                </button>
+                <form id="formExcluir" method="POST">
+                    <button type="submit" class="btn btn-danger">
+                        <i class="bi bi-trash me-2"></i>Excluir
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block scripts %}
 <script>
-    function confirmarExclusao(titulo) {
-        if (confirm("Tem certeza que deseja excluir a série: " + titulo + "?")) {
-            alert("Simulação: Série removida com sucesso!");
-        }
-    }
+    const modalExcluir = document.getElementById('modalExcluir');
+    modalExcluir.addEventListener('show.bs.modal', function (event) {
+        const botao = event.relatedTarget;
+        const id = botao.getAttribute('data-id');
+        const nome = botao.getAttribute('data-nome');
+        document.getElementById('excluirNome').textContent = nome;
+        document.getElementById('formExcluir').action = '/series/excluir/' + id;
+    });
 </script>
 {% endblock %}

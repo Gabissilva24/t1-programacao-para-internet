@@ -17,7 +17,7 @@
             <div class="card-body p-4">
 
                 <!-- Formulário que envia dados para inserir série -->
-                <form action="{{ url_for('inserir_series') }}" method="POST">
+                <form action="{{ url_for('inserir_serie') }}" method="POST">
                     
                     <!-- Campo título -->
                     <div class="mb-3">
@@ -32,7 +32,7 @@
                         <!-- Campo número de temporadas -->
                         <div class="col-md-6 mb-3">
                             <label for="temporadas" class="form-label fw-bold">Temporadas</label>
-                            <input type="number" name="temporadas" id="temporadas" class="form-control" placeholder="Ex: 4">
+                            <input type="number" name="temporadas" id="temporadas" class="form-control" placeholder="Ex: 4" required>
                         </div>
 
                         <!-- Plataforma onde assistir -->
