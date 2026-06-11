@@ -43,11 +43,10 @@
                             
                             <!-- Select com opções pré-definidas -->
                             <select name="genero" id="genero" class="form-select">
-                                <option value="Comédia">Comédia</option>
-                                <option value="Terror">Terror</option>
-                                <option value="Aventura">Aventura</option>
-                                <option value="Suspense">Suspense</option>
-                                <option value="Animação">Animação</option>
+                                <option value="">Selecione um gênero</option>
+                                {% for g in lista_generos %}
+                                    <option value="{{ g.id_genero }}">{{ g.nome }}</option>
+                                {% endfor %}
                             </select>
                         </div>
                     </div>

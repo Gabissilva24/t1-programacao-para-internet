@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block conteudo %}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+
+        <div class="card shadow border-0">
+
+            <!-- Cabeçalho -->
+            <div class="card-header bg-dark text-white py-3">
+                <h4 class="mb-0"><i class="bi bi-film"></i> Editar Filme</h4>
+            </div>
+
+            <!-- Corpo -->
+            <div class="card-body p-4">
+
+                <form action="{{ url_for('editar_filme', id=item.id_filme) }}" method="POST">
+
+                    <!-- Campo Título -->
+                    <div class="mb-3">
+                        <label for="titulo" class="form-label fw-bold">Título do Filme</label>
+                        <input type="text" name="titulo" id="titulo" class="form-control"
+                               value="{{ item.titulo }}" placeholder="Ex: O Auto da Compadecida" required>
+                        <div class="form-text">Campo obrigatório.</div>
+                    </div>
+
+                    <!-- Campo Diretor -->
+                    <div class="mb-3">
+                        <label for="diretor" class="form-label fw-bold">Diretor</label>
+                        <input type="text" name="diretor" id="diretor" class="form-control"
+                               value="{{ item.diretor or '' }}" placeholder="Nome do Diretor">
+                    </div>
+
+                    <!-- Linha com dois campos lado a lado -->
+                    <div class="row">
+
+                        <!-- Campo Ano -->
+                        <div class="col-md-6 mb-3">
+                            <label for="ano" class="form-label fw-bold">Ano de Lançamento</label>
+                            <input type="number" name="ano" id="ano" class="form-control"
+                                   value="{{ item.ano or '' }}" placeholder="Ex: 2000">
+                        </div>
+
+                        <!-- Campo Gênero -->
+                        <div class="col-md-6 mb-3">
+                            <label for="genero_id" class="form-label fw-bold">Gênero</label>
+                            <select name="genero_id" id="genero_id" class="form-select">
+                                <option value="">Selecione um gênero</option>
+                                {% for g in lista_generos %}
+                                    <option value="{{ g.id_genero }}"
+                                        {{ 'selected' if g.id_genero == item.genero_id else '' }}>
+                                        {{ g.nome }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Campo Poster -->
+                    <div class="mb-3">
+                        <label for="poster" class="form-label fw-bold">Poster</label>
+                        <input type="text" name="poster" id="poster" class="form-control"
+                               value="{{ item.poster or '' }}" placeholder="Ex: nome_do_filme.jpg">
+                        <div class="form-text">Nome do arquivo de imagem na pasta static/imgs. Opcional.</div>
+                    </div>
+
+                    <!-- Preview do poster atual -->
+                    {% if item.poster %}
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Poster Atual</label>
+                        <div>
+                            <img src="{{ url_for('static', filename='imgs/' + item.poster) }}"
+                                 alt="Poster atual"
+                                 class="rounded shadow-sm"
+                                 style="width: 80px; height: 110px; object-fit: cover;">
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <!-- Botões -->
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-success btn-lg">
+                            <i class="bi bi-check-circle"></i> Salvar Alterações
+                        </button>
+                        <a href="{{ url_for('listar_filmes') }}" class="btn btn-outline-secondary">
+                            Cancelar
+                        </a>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
