@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block conteudo %}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+
+        <div class="card shadow border-0">
+
+            <!-- Cabeçalho -->
+            <div class="card-header bg-dark text-white py-3">
+                <h4 class="mb-0"><i class="bi bi-tag"></i> Editar Gênero</h4>
+            </div>
+
+            <!-- Corpo -->
+            <div class="card-body p-4">
+
+                <form action="{{ url_for('editar_genero', id=item.id_genero) }}" method="POST">
+
+                    <!-- Campo Nome -->
+                    <div class="mb-3">
+                        <label for="nome" class="form-label fw-bold">Nome do Gênero</label>
+                        <input type="text" name="nome" id="nome" class="form-control form-control-lg"
+                               value="{{ item.nome }}" placeholder="Ex: Suspense, Ficção, Documentário" required>
+                    </div>
+
+                    <!-- Campo Descrição -->
+                    <div class="mb-3">
+                        <label for="descricao" class="form-label fw-bold">Descrição do Gênero</label>
+                        <textarea name="descricao" id="descricao" class="form-control" rows="4"
+                                  placeholder="Descreva brevemente que tipo de conteúdo pertence a este gênero...">{{ item.descricao }}</textarea>
+                    </div>
+
+                    <!-- Botões -->
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-success btn-lg">
+                            <i class="bi bi-check-circle"></i> Salvar Alterações
+                        </button>
+                        <a href="{{ url_for('listar_generos') }}" class="btn btn-light">
+                            Cancelar
+                        </a>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

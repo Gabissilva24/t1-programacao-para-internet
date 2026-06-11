@@ -28,8 +28,8 @@ CREATE TABLE IF NOT EXISTS funcoes(
 CREATE TABLE IF NOT EXISTS usuarios(
     id_usuario BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     nome_usuario VARCHAR(50) NOT NULL,
+    cpf CHAR(14) NOT NULL UNIQUE,
     email VARCHAR(255) NOT NULL UNIQUE,
-    tipo_perfil VARCHAR(50),
     senha VARCHAR(255) NOT NULL,
     status ENUM ('Ativo', 'Inativo') DEFAULT 'Ativo',
 
@@ -59,6 +59,14 @@ CREATE TABLE IF NOT EXISTS generos (
         ON UPDATE CURRENT_TIMESTAMP
 );
 
+INSERT INTO generos (nome, descricao) VALUES
+('Comédia', 'Filmes e séries focados em humor'),
+('Aventura', 'Muita adrenalina e exploração'),
+('Suspense', 'Histórias de tensão e mistério'),
+('Animação', 'Desenhos para todas as idades'),
+('Fantasia', 'Mundos imaginários, magia'),
+('Romance', 'Histórias de amor, relacionamentos e emoções');
+
 -- DROP TABLE IF EXISTS filmes;
 
 CREATE TABLE IF NOT EXISTS filmes (
@@ -67,7 +75,7 @@ CREATE TABLE IF NOT EXISTS filmes (
     diretor VARCHAR(150),
     ano SMALLINT UNSIGNED,
     genero_id BIGINT UNSIGNED,
-    status ENUM('Ativo','Inativo') DEFAULT 'Ativo',
+    poster VARCHAR(255) NULL,    
 
     -- logs
     criado_em DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -82,17 +90,32 @@ CREATE TABLE IF NOT EXISTS filmes (
     INDEX idx_ano (ano)
 );
 
+INSERT INTO filmes (titulo, diretor, ano, genero_id, poster) VALUES
+('O Auto da Compadecida', 'Guel Arraes', 2000, (SELECT id_genero FROM generos WHERE nome = 'Comédia'), 'o_auto_da_compadecida.jpg'),
+('A Múmia', 'Stephen Sommers', 1999, (SELECT id_genero FROM generos WHERE nome = 'Aventura'), 'a_mumia.jpg'),
+('O Sexto Sentido', 'M. Night Shyamalan', 1999, (SELECT id_genero FROM generos WHERE nome = 'Suspense'), 'o_sexto_sentido.jpg'),
+('Olhos Famintos 2', 'Victor Salva', 2003, (SELECT id_genero FROM generos WHERE nome = 'Terror'), 'olhos_famintos2.jpg'),
+('Os Sem-Floresta', 'Tim Johnson', 2006, (SELECT id_genero FROM generos WHERE nome = 'Animação'), 'os_sem_floresta.jpg');
+
 -- DROP TABLE IF EXISTS series;
 
 CREATE TABLE IF NOT EXISTS series (
     id_serie BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     titulo VARCHAR(255) NOT NULL,
-    temporadas INT UNSIGNED DEFAULT 0,
+    temporadas INT UNSIGNED NOT NULL,
     plataforma VARCHAR(150),
-    status ENUM('Ativo','Inativo') DEFAULT 'Ativo',
+    poster VARCHAR(255) NULL,
 
     criado_em DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     alterado_em DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP 
         ON UPDATE CURRENT_TIMESTAMP,
     INDEX idx_titulo_series (titulo)
 );
+
+-- Dados iniciais de séries
+INSERT INTO series (titulo, temporadas, plataforma, poster) VALUES
+('Peaky Blinders', 6, 'Netflix', 'peaky_blinders.jpg'),
+('Smallville', 10, 'Prime Video', 'smallville.jpg'),
+('Gossip Girl', 6, 'Netflix', 'gossip_girl.jpg'),
+('Supernatural', 15, 'HBO Max', 'supernatural.jpg'),
+('Teen Wolf', 6, 'Netflix', 'teen_wolf.jpg');
