@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block conteudo %}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+
+        <div class="card shadow border-0">
+
+            <!-- Cabeçalho -->
+            <div class="card-header bg-dark text-white py-3">
+                <h4 class="mb-0"><i class="bi bi-shield-lock"></i> Editar Função</h4>
+            </div>
+
+            <!-- Corpo -->
+            <div class="card-body p-4">
+
+                <form action="{{ url_for('editar_funcao', id=item.id_funcao) }}" method="POST">
+
+                    <!-- Campo Nome -->
+                    <div class="mb-3">
+                        <label for="nome" class="form-label fw-bold">Nome da Função</label>
+                        <input type="text" name="nome" id="nome" class="form-control"
+                               value="{{ item.nome }}" placeholder="Ex: Administrador, Editor..." required>
+                        <div class="form-text">Campo obrigatório.</div>
+                    </div>
+
+                    <!-- Campo Status -->
+                    <div class="mb-3">
+                        <label for="status" class="form-label fw-bold">Status</label>
+                        <select name="status" id="status" class="form-select">
+                            <option value="Ativo" {{ 'selected' if item.status == 'Ativo' else '' }}>Ativo</option>
+                            <option value="Inativo" {{ 'selected' if item.status == 'Inativo' else '' }}>Inativo</option>
+                        </select>
+                    </div>
+
+                    <!-- Campo Descrição -->
+                    <div class="mb-3">
+                        <label for="descricao" class="form-label fw-bold">Descrição</label>
+                        <textarea name="descricao" id="descricao" class="form-control" rows="3"
+                                  placeholder="Descreva as responsabilidades desta função...">{{ item.descricao }}</textarea>
+                    </div>
+
+                    <!-- Permissões -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Permissões</label>
+                        <div class="border rounded p-3">
+                            <div class="form-check">
+                                <input type="checkbox" name="gerenciar_usuarios" id="gerenciar_usuarios"
+                                       class="form-check-input" {{ 'checked' if item.gerenciar_usuarios else '' }}>
+                                <label for="gerenciar_usuarios" class="form-check-label">Gerenciar Usuários</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" name="gerenciar_funcoes" id="gerenciar_funcoes"
+                                       class="form-check-input" {{ 'checked' if item.gerenciar_funcoes else '' }}>
+                                <label for="gerenciar_funcoes" class="form-check-label">Gerenciar Funções</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" name="gerenciar_filmes" id="gerenciar_filmes"
+                                       class="form-check-input" {{ 'checked' if item.gerenciar_filmes else '' }}>
+                                <label for="gerenciar_filmes" class="form-check-label">Gerenciar Filmes</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Botões -->
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-success btn-lg">
+                            <i class="bi bi-check-circle"></i> Salvar Alterações
+                        </button>
+                        <a href="{{ url_for('listar_funcoes') }}" class="btn btn-outline-secondary">
+                            Cancelar
+                        </a>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

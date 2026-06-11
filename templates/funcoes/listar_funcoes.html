@@ -13,17 +13,6 @@
     </div>
 </div>
 
-{% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-        {% for categoria, mensagem in messages %}
-            <div class="alert alert-{{ categoria }} alert-dismissible fade show" role="alert">
-                {{ mensagem }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        {% endfor %}
-    {% endif %}
-{% endwith %}
-
 <div class="card shadow border-0">
     <div class="card-body p-0">
         <table class="table table-hover mb-0">
@@ -43,19 +32,23 @@
                     <td><strong>{{ d.nome }}</strong></td>
                     <td>{{ d.descricao }}</td>
                     <td>
-                        {% if d.status == 'ativo' %}
+                        {% if d.status == 'Ativo' %}
                             <span class="badge bg-success">{{ d.status }}</span>
                         {% else %}
                             <span class="badge bg-danger">{{ d.status }}</span>
                         {% endif %}
                     </td>
                     <td class="text-center">
-                        <a href="#" class="btn btn-sm btn-outline-primary me-1">
-                            <i class="bi bi-pencil"></i>
+                        <a href="{{ url_for('editar_funcao', id=d.id_funcao) }}" class="btn btn-sm btn-outline-primary me-1">
+                            <i class="bi bi-pencil"></i> Editar
                         </a>
-                        <a href="#" class="btn btn-sm btn-outline-danger">
-                            <i class="bi bi-trash"></i>
-                        </a>
+                        <button class="btn btn-sm btn-outline-danger"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modalExcluir"
+                                data-id="{{ d.id_funcao }}"
+                                data-nome="{{ d.nome }}">
+                            <i class="bi bi-trash"></i> Excluir
+                        </button>
                     </td>
                 </tr>
                 {% else %}
@@ -70,4 +63,45 @@
     </div>
 </div>
 
+<!-- Modal de confirmação de exclusão -->
+<div class="modal fade" id="modalExcluir" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="bi bi-exclamation-triangle-fill text-danger me-2"></i>Confirmar Exclusão
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                Tem certeza que deseja excluir a função
+                <strong id="excluirNome"></strong>?
+                <br>Esta ação não poderá ser desfeita.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    Cancelar
+                </button>
+                <form id="formExcluir" method="POST">
+                    <button type="submit" class="btn btn-danger">
+                        <i class="bi bi-trash me-2"></i>Excluir
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const modalExcluir = document.getElementById('modalExcluir');
+    modalExcluir.addEventListener('show.bs.modal', function (event) {
+        const botao = event.relatedTarget;
+        const id = botao.getAttribute('data-id');
+        const nome = botao.getAttribute('data-nome');
+        document.getElementById('excluirNome').textContent = nome;
+        document.getElementById('formExcluir').action = '/funcoes/excluir/' + id;
+    });
+</script>
 {% endblock %}
